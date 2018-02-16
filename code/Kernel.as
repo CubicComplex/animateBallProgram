@@ -1,58 +1,60 @@
 ﻿package
 {
+	import flash.events.MouseEvent;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	public class Kernel extends MovieClip
 	{
 		var ball1:ball;
-		var floor1:floor;
-		var floorRot:uint;
 		var speed:int;
 		var direction:int;
+		var dragging:Boolean;
 		public function Kernel()
 		{
 			// constructor code
-			floor1 = new floor();
-			floor1.x = stage.stageWidth/2;
-			floor1.y = stage.stageHeight-100;
-			addChild(floor1);
-			
 			ball1 = new ball();
 			ball1.x = stage.stageWidth/2;
-			ball1.y = floor1.y-ball1.height+100;
+			ball1.y = stage.stageHeight/2;
 			addChild(ball1);
 			
 			addEventListener(Event.ENTER_FRAME, Update);
+			ball1.addEventListener(MouseEvent.MOUSE_UP, DragBall);
+			ball1.addEventListener(MouseEvent.MOUSE_DOWN, DropBall);
 			direction = 1;
 			speed = 5;
-			floorRot = 0;
+			dragging = false;
 		}
 		
 		public function Update(e:Event)
 		{
-			ball1.x = ball1.x + speed * direction;
-			ball1.y = ball1.y + 1.5;
-			ball1.rotation = ball1.rotation + speed * direction;
+			if (dragging == false)
+			{
+				ball1.x = ball1.x + speed * direction;
+				ball1.rotation = ball1.rotation + speed * direction;
 
-			if (ball1.x >= stage.stageWidth + 50)
-			{
-				direction = -1;
-				floorRot = 0;
-				ball1.y = ball1.y - 410;
-			}
+				if (ball1.x >= stage.stageWidth + 50)
+				{
+					direction = -1;
+				}
 			
-			if (ball1.x <= -50)
-			{
-				direction = 1;
-				floorRot = 0;
-				ball1.y = ball1.y - 410;
+				if (ball1.x <= -50)
+				{
+					direction = 1;
+				}
 			}
-			
-			floor1.rotation = floorRot * direction;
-			if (floorRot <= 15 && floorRot >= 0)
-			{
-				floorRot = floorRot + 1;
-			}
+		}
+		
+		public function DragBall(e:Event)
+		{
+			ball1.startDrag();
+			dragging = true;
+		}
+		
+		public function DropBall(e:Event)
+		{
+			ball1.stopDrag();
+			dragging = false;
 		}
 	}
 }
+		
