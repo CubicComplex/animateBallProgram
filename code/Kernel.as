@@ -9,6 +9,8 @@
 		var speed:int;
 		var direction:int;
 		var dragging:Boolean;
+		var NameArray:Array = new Array();
+		
 		public function Kernel()
 		{
 			// constructor code
@@ -18,8 +20,8 @@
 			addChild(ball1);
 			
 			addEventListener(Event.ENTER_FRAME, Update);
-			ball1.addEventListener(MouseEvent.MOUSE_UP, DragBall);
-			ball1.addEventListener(MouseEvent.MOUSE_DOWN, DropBall);
+			ball1.addEventListener(MouseEvent.MOUSE_DOWN, DragBall);
+			ball1.addEventListener(MouseEvent.MOUSE_UP, DropBall);
 			direction = 1;
 			speed = 5;
 			dragging = false;
@@ -27,11 +29,22 @@
 		
 		public function Update(e:Event)
 		{
+			NameArray.push("Bobby");
+			NameArray.push("Boris");
+			NameArray.push("Bob");
+			NameArray.push("Bobinsonio");
+			NameArray.push("Dave");
+			
+			var i:int; 
+			for (i = 0; i < 5; i++) 
+			{ 
+				trace(NameArray[i]); 
+			}
 			if (dragging == false)
 			{
 				ball1.x = ball1.x + speed * direction;
 				ball1.rotation = ball1.rotation + speed * direction;
-
+			}
 				if (ball1.x >= stage.stageWidth + 50)
 				{
 					direction = -1;
@@ -41,7 +54,6 @@
 				{
 					direction = 1;
 				}
-			}
 		}
 		
 		public function DragBall(e:Event)
